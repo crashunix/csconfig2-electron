@@ -10,95 +10,120 @@
 
 <body>
   <div id="app">
-
     <main class="flex h-screen p-4">
       <div class="flex flex-shrink-0 flex-col justify-between rounded-lg bg-green-50 py-6 pl-6 pr-16">
         <div class="flex flex-col">
           <h1 class="text-2xl font-bold text-gray-700">csconfig</h1>
           <div class="mt-10 flex flex-col space-y-4">
 
-            <div class="flex items-center space-x-2 cursor-pointer" v-bind:class="{ 'opacity-50': selectedMenu != item.id }"
-              v-for="item in menu" :key="id" @click="selectMenu(item.id)">
-              <span class="text-xl">{{item.emoji}}</span>
+            <div class="flex items-center space-x-2 cursor-pointer" id="btnStep1">
+              <span class="text-xl">📂</span>
               <div class="flex flex-col">
-                <span class="text-sm font-medium">{{item.title}}</span>
-                <span class="text-xs">{{item.subtitle}}</span>
+                <span class="text-sm font-medium">Escolher diretório</span>
+                <span class="text-xs">Diretório de instalação do jogo</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2 cursor-pointer opacity-50" id="btnStep2">
+              <span class="text-xl">🕹️</span>
+              <div class="flex flex-col">
+                <span class="text-sm font-medium">Configurar binds</span>
+                <span class="text-xs">Binds necessárias para o funcionamento</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2 cursor-pointer opacity-50" id="btnStep3">
+              <span class="text-xl">📱</span>
+              <div class="flex flex-col">
+                <span class="text-sm font-medium">Conectar App</span>
+                <span class="text-xs">Use o IP</span>
               </div>
             </div>
 
           </div>
         </div>
-        <span class="text-xs text-gray-500">crashunix. 2023</span>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-500">crashunix. 2023</span>
+          <span class="text-xs text-gray-300">v.1.0.0</span>
+        </div>
       </div>
       <div class="flex h-full w-full items-center justify-center px-4">
-        
-        <div class="flex flex-col items-center" v-if="selectedMenu == 1">
-            <span class="text-5xl">{{getMenu(1).emoji}}</span>
-            <h3 class="mt-8 text-2xl font-semibold">{{getMenu(1).title}}</h3>
-            <p>{{getMenu(1).subtitle}}</p>
-            <button class="py-2 px-3 border border-gray-600 rounded-md mt-8 text-gray-600">Selecionar</button>
-        </div>
-        
-        <div class="flex flex-col items-center" v-if="selectedMenu == 2">
-          <span class="text-5xl">{{getMenu(2).emoji}}</span>
-          <h3 class="mt-8 text-2xl font-semibold">{{getMenu(2).title}}</h3>
-          <p>{{getMenu(2).subtitle}}</p>
+
+        <div class="flex flex-col items-center" id="screenStep1">
+          <span class="text-5xl">📂</span>
+          <h3 class="mt-8 text-2xl font-semibold">Escolher diretório</h3>
+          <p>Diretório de instalação do jogo</p>
+          <button class="py-2 px-3 border border-gray-600 rounded-md mt-8 text-gray-600">Selecionar</button>
         </div>
 
-        <div class="flex flex-col items-center" v-if="selectedMenu == 3">
-          <span class="text-5xl">{{getMenu(3).emoji}}</span>
-          <h3 class="mt-8 text-2xl font-semibold">{{getMenu(3).title}}</h3>
-          <p>{{getMenu(3).subtitle}}</p>
-          
+        <div class="flex flex-col items-center hidden" id="screenStep2">
+          <span class="text-5xl">🕹️</span>
+          <h3 class="mt-8 text-2xl font-semibold">Escolher diretório</h3>
+          <p>Diretório de instalação do jogo</p>
+          <button class="py-2 px-3 border border-gray-600 rounded-md mt-8 text-gray-600">Selecionar</button>
+        </div>
+
+        <div class="flex flex-col items-center hidden" id="screenStep3">
+          <span class="text-5xl">📱</span>
+          <h3 class="mt-8 text-2xl font-semibold">Conectar app</h3>
+          <p>Use o ip <span class="font-medium" id="address">0.0.0.0</span></p>
           <div class="flex flex-col space-y-2 px-10 mt-8">
-            <p class="text-center">Abra o app <span class="text-medium font-medium">csconfig</span> e conecte-se usando o seguinte ip <span class="text-medium font-medium">192.168.5.69</span> e a porta <span class="text-medium font-medium">4750</span>.</p>
-          </div>       
+            <p class="text-center">Abra o app <span class="text-medium font-medium">csconfig</span> e conecte-se usando
+              o seguinte ip <span class="text-medium font-medium" id="address">0.0.0.0</span> e a porta <span
+                class="text-medium font-medium">443</span>.</p>
+          </div>
         </div>
 
       </div>
     </main>
   </div>
-</body>
 
-<script>
-  const { createApp } = Vue
+  <script>
 
-  createApp({
-    data() {
-      return {
-        selectedMenu: 1,
-        menu: [
-          {
-            id: 1,
-            title: 'Escolher diretório',
-            subtitle: 'Diretório de instalação do jogo',
-            emoji: '📂'
-          },
-          {
-            id: 2,
-            title: 'Configurar binds',
-            subtitle: 'Binds necessárias para o funcionamento',
-            emoji: '🕹️'
-          },
-          {
-            id: 3,
-            title: 'Conectar App',
-            subtitle: 'Falta pouco!',
-            emoji: '📱'
-          },
-        ],
-        message: 'Hello Vue!'
+    var btnStep1 = document.querySelector('#btnStep1');
+    var btnStep2 = document.querySelector('#btnStep2');
+    var btnStep3 = document.querySelector('#btnStep3');
+
+    var screenStep1 = document.querySelector('#screenStep1');
+    var screenStep2 = document.querySelector('#screenStep2');
+    var screenStep3 = document.querySelector('#screenStep3');
+
+    btnStep1.addEventListener("click", () => {
+      screenStep1.classList.remove("hidden");
+      screenStep2.classList.add("hidden");
+      screenStep3.classList.add("hidden");
+    })
+    btnStep2.addEventListener("click", () => {
+      screenStep1.classList.add("hidden");
+      screenStep2.classList.remove("hidden");
+      screenStep3.classList.add("hidden");
+    })
+    btnStep3.addEventListener("click", () => {
+      screenStep1.classList.add("hidden");
+      screenStep2.classList.add("hidden");
+      screenStep3.classList.remove("hidden");
+    })
+
+    const os = require('os');
+
+    getLocalIpAddress = () => {
+      const interfaces = os.networkInterfaces();
+
+      for (const iface of Object.values(interfaces)) {
+        for (const address of iface) {
+          if (address.family === 'IPv4' && !address.internal && address.address.startsWith('192.168.5.')) {
+            return address.address;
+          }
+        }
       }
-    },
-    methods: {
-      selectMenu(id) {
-        this.selectedMenu = id;
-      },
-      getMenu(id) {
-        return this.menu.find(x => x.id == id);
-      }
+
+      return null;
     }
-  }).mount('#app')
-</script>
+
+    document.getElementById("address").innerText = getLocalIpAddress();
+
+  </script>
+
+</body>
 
 </html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>csconfig</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+  <div id="app">
+
+    <main class="flex h-screen p-4">
+      <div class="flex flex-shrink-0 flex-col justify-between rounded-lg bg-green-50 py-6 pl-6 pr-16">
+        <div class="flex flex-col">
+          <h1 class="text-2xl font-bold text-gray-700">csconfig</h1>
+          <div class="mt-10 flex flex-col space-y-4">
+
+            <div class="flex items-center space-x-2 cursor-pointer"
+              v-bind:class="{ 'opacity-50': selectedMenu != item.id }" v-for="item in menu" :key="id"
+              @click="selectMenu(item.id)">
+              <span class="text-xl">{{item.emoji}}</span>
+              <div class="flex flex-col">
+                <span class="text-sm font-medium">{{item.title}}</span>
+                <span class="text-xs">{{item.subtitle}}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-gray-500">crashunix. 2023</span>
+          <span class="text-xs text-gray-300">v.1.0.0</span>
+        </div>
+      </div>
+      <div class="flex h-full w-full items-center justify-center px-4">
+
+        <div class="flex flex-col items-center" v-if="selectedMenu == 1">
+          <span class="text-5xl">{{getMenu(1).emoji}}</span>
+          <h3 class="mt-8 text-2xl font-semibold">{{getMenu(1).title}}</h3>
+          <p>{{getMenu(1).subtitle}}</p>
+          <button class="py-2 px-3 border border-gray-600 rounded-md mt-8 text-gray-600">Selecionar</button>
+        </div>
+
+        <div class="flex flex-col items-center" v-if="selectedMenu == 2">
+          <span class="text-5xl">{{getMenu(2).emoji}}</span>
+          <h3 class="mt-8 text-2xl font-semibold">{{getMenu(2).title}}</h3>
+          <p>{{getMenu(2).subtitle}}</p>
+        </div>
+
+        <div class="flex flex-col items-center" v-if="selectedMenu == 3">
+          <span class="text-5xl">{{getMenu(3).emoji}}</span>
+          <h3 class="mt-8 text-2xl font-semibold">{{getMenu(3).title}}</h3>
+          <p>{{getMenu(3).subtitle}}</p>
+
+          <div class="flex flex-col space-y-2 px-10 mt-8">
+            <p class="text-center">Abra o app <span class="text-medium font-medium">csconfig</span> e conecte-se usando
+              o seguinte ip <span class="text-medium font-medium" id="address">0.0.0.0</span> e a porta <span
+                class="text-medium font-medium">4750</span>.</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</body>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        selectedMenu: 1,
+        menu: [
+          {
+            id: 1,
+            title: 'Escolher diretório',
+            subtitle: 'Diretório de instalação do jogo',
+            emoji: '📂'
+          },
+          {
+            id: 2,
+            title: 'Configurar binds',
+            subtitle: 'Binds necessárias para o funcionamento',
+            emoji: '🕹️'
+          },
+          {
+            id: 3,
+            title: 'Conectar App',
+            subtitle: 'Falta pouco!',
+            emoji: '📱'
+          },
+        ],
+        message: 'Hello Vue!'
+      }
+    },
+    methods: {
+      selectMenu(id) {
+        this.selectedMenu = id;
+      },
+      getMenu(id) {
+        return this.menu.find(x => x.id == id);
+      }
+    }
+  }).mount('#app')
+
+  const os = require('os');
+
+    getLocalIpAddress = () => {
+      const interfaces = os.networkInterfaces();
+
+      for (const iface of Object.values(interfaces)) {
+        for (const address of iface) {
+          if (address.family === 'IPv4' && !address.internal && address.address.startsWith('192.168.5.')) {
+            return address.address;
+          }
+        }
+      }
+
+      return null;
+    }
+
+    document.getElementById("address").innerText = getLocalIpAddress();
+
+</script>
+
+</html>
